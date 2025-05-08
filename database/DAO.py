@@ -24,6 +24,7 @@ class DAO():
         cursor.close()
         conn.close()
         return result
+
     @staticmethod
     def getEdgeFromYear(year):
         conn = DBConnect.get_connection()
@@ -54,18 +55,17 @@ class DAO():
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """select c.state1no , c.state2no 
-                from contiguity c
-                where c.conttype = "1"
-                and c.`year`  <  %s"""
+        query = """SELECT co.StateAbb, co.CCode, co.StateNme 
+                       from contiguity c, country co
+                       where c.`year` <= %s
+                       and c.state1no = co.CCode 
+                       group by c.state1no ORDER BY StateAbb"""
 
         cursor.execute(query, (year,))
 
         for row in cursor:
-            if row["state1no"] not in result:
-                result.append((row["state1no"]))
-            if row["state2no"] not in result:
-                result.append((row["state2no"]))
+            result.append(Country(**row))
+            result.append(Country(**row))
 
         cursor.close()
         conn.close()

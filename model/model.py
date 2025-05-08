@@ -24,17 +24,25 @@ class Model:
     def getNumNodi(self):
         return len(self.grafo.nodes)
 
+    def getListaCountry(self):
+        return self._listAllCountry
+
     def getNumArchi(self):
         return len(self.grafo.edges)
 
+    def getNumComponentiConnesse(self):
+        return nx.number_connected_components(self.grafo)
+
     def buildGraph(self, year):
         self._listConfini = DAO.getEdgeFromYear(year)
-        self._listCountryCode = DAO.getNodesFromYear(year)
 
-        for code in self._listCountryCode:
-            self._listCountry.append(self._idNoMapCountry[code])
+        self._listCountry = DAO.getNodesFromYear(year)
 
-        self.grafo.add_nodes_from(self._idNoMapCountry.values())
+
+        #for code in self._listCountryCode:
+        #    self._listCountry.append(self._idNoMapCountry[code])
+
+        self.grafo.add_nodes_from(self._listCountry)
         self.addEdges()
 
     def addEdges(self):
@@ -43,3 +51,7 @@ class Model:
             u = self._idNoMapCountry[arc.state1no]
             v = self._idNoMapCountry[arc.state2no]
             self.grafo.add_edge(u, v)
+
+    #IMPORTANTISSIMOOOOOOOOOOOOO !!!!!!!!!!!!!
+    def getVisitati(self, stato_selezionato):
+        return list(nx.bfs_tree(self.grafo, source=stato_selezionato))

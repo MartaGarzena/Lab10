@@ -5,6 +5,7 @@ class View(ft.UserControl):
     def __init__(self, page: ft.Page):
         super().__init__()
         # page stuff
+        self._ddCountry = None
         self._page = page
         self._page.title = "TdP 2025 - Lab 10"
         self._page.horizontal_alignment = 'CENTER'
@@ -26,6 +27,13 @@ class View(ft.UserControl):
         self._btnCalcola = ft.ElevatedButton(text="Calcola Confini", on_click=self._controller.handleCalcola)
         row1 = ft.Row([self._txtAnno, self._btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
+
+        self._ddCountry = ft.Dropdown(label="Select Stato", disabled=True)
+        self._btnCerca = ft.ElevatedButton(text="Cerca Confini", on_click=self._controller.handleCerca, disabled=True, width=200)
+        self._controller.fillDD()
+        row2 = ft.Row([self._ddCountry, self._btnCerca], alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row2)
+
         # List View where the reply is printed
         self._txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
         self._page.controls.append(self._txt_result)
