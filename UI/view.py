@@ -50,3 +50,9 @@ class View(ft.UserControl):
 
     def update_page(self):
         self._page.update()
+
+    def txt_result(self):
+        self._txt_result
+
+    def txtAnno(self):
+        self._txtAnno

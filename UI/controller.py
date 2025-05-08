@@ -9,4 +9,25 @@ class Controller:
         self._model = model
 
     def handleCalcola(self, e):
-        pass
+
+        year = self._view._txtAnno.value
+        try:
+            yearN = int(year)
+        except ValueError:
+            self._view._txt_result.controls.clear()
+            self._view._txt_result.controls.append(ft.Text("Please provide a numerical value in field. "))
+            self._view.update_page()
+            return
+
+        self._model.buildGraph(yearN)
+        self._view._txt_result.controls.append(ft.Text(f"Grato creato correttamente"))
+
+
+        nodiAlfabetici = sorted(self._model.grafo.nodes, key=lambda country: country.StateName)
+        self._view._txt_result.controls.clear()
+        for node in nodiAlfabetici:
+            self._view._txt_result.controls.append(ft.Text(f"{node.StateName} -- {self._model.grafo.degree(node)} vicini"))
+
+        self._view.update_page()
+
+
